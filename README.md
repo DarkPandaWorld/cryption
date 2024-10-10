@@ -42,9 +42,9 @@ To create a 26-row matrix, we apply the translation method chosen:
 
 _Default Translation:_ Each row shifts the letters by one position.
 
-`Row 1: c, a, t, b, d, e, ...
-Row 2: a, t, b, d, e, f, ...
-Row 3: t, b, d, e, f, g, ...
+`Row 1: c, a, t, b, d, e, ... \n
+Row 2: a, t, b, d, e, f, ...\n
+Row 3: t, b, d, e, f, g, ...\n
 ...`
 
 _Prime and Fibonacci Translations:_ Each of these methods shifts the alphabet based on their respective sequences.
