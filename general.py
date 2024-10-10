@@ -118,6 +118,10 @@ def main_encrypt():
     user_pswd = user_pswd.replace(" ", "")
     user_message = user_message.replace(" ", "")
 
+    user_keyphrase = user_keyphrase.lower()
+    user_pswd = user_pswd.lower()
+    user_message = user_message.lower()
+
     #choose your translation order
     #0 = default, 1 = prime, 2 = Fibonacci, 3 = random
     user_translation_order = input("Please enter your translation order where 0 = default, 1 = prime, 2 = Fibonacci, 3 = random: ")
@@ -161,6 +165,10 @@ def main_decrypt():
     user_keyphrase = user_keyphrase.replace(" ", "")
     user_pswd = user_pswd.replace(" ", "")
     user_secret_message = user_secret_message.replace(" ", "")
+
+    user_keyphrase = user_keyphrase.lower()
+    user_pswd = user_pswd.lower()
+    user_message = user_message.lower()
 
     #choose your translation order
     #0 = default, 1 = prime, 2 = Fibonacci, 3 = random
