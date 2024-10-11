@@ -90,6 +90,12 @@ def generateMatrix(alphabet, encodes):
         matrix.append(a)
     return matrix
 
+def write_matrix(matrix):
+   # Write the matrix to a text file
+  with open("matrix.txt", "w") as file:
+    for row in matrix:
+        file.write(" ".join(row) + "\n")
+
 def encrypt(matrix, password, message):
   encryption = ""
   for i in range(len(message)):
@@ -152,6 +158,11 @@ def main_encrypt():
             user_pswd += user_pswd[i]
     if len(user_pswd) > len(user_message):
         password = password[:len(user_message)]
+
+    #matrix saved to txt file in folder
+    user_dec = input("Do you want to write the matrix to a file? (y/n): ")
+    if user_dec == "y":
+        write_matrix(matrix)
 
     print(encrypt(matrix, user_pswd, user_message))
 
