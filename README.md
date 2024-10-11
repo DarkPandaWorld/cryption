@@ -31,9 +31,9 @@ This program will help you encrypt or decrypt messages based on your input. Here
 
 ****Constructing the Alphabet**
 
-For example, if your password is "cat", the program will move "cat" to the front of the alphabet and arrange the remaining letters behind it. The resulting alphabet will look like this:
+For example, if your keyphrase is "cat", the program will move "cat" to the front of the alphabet and arrange the remaining letters behind it. The resulting alphabet will look like this:
 
-`{c, a, t, b, d, e, ..., x, y, z}`
+`{c a t b d e f g h i j k l m n o p q r s u v w x y z}`
 No duplicate letters will be present.
 
 **Creating the Matrix**
@@ -42,27 +42,45 @@ To create a 26-row matrix, we apply the translation method chosen:
 
 _Default Translation:_ Each row shifts the letters by one position.
 
-![image](https://github.com/user-attachments/assets/772a59fe-798c-4454-be50-d02611bd6eb1)
+![image](https://github.com/user-attachments/assets/20bfff1d-5e24-4020-87fb-bf4f0f8eaa2e)
 
 
-_Prime and Fibonacci Translations:_ Each of these methods shifts the alphabet based on their respective sequences.
+_Prime and Fibonacci Translations:_ Each of these methods shifts the alphabet based on their respective sequences. So those matrices would look something like this:
+Prime: 
+![image](https://github.com/user-attachments/assets/75629618-90aa-4ae3-8e56-600527057c32)
 
+
+Fibo:
+![image](https://github.com/user-attachments/assets/b8222d2a-53f9-4abf-b0b3-6cb64c6915cc)
 
 
 
 **Encrypting and Decrypting Messages**
 
-Encryption: To encrypt a message, look at the first column for the letter
-			from your password and the first row for the letter from your
-			message. The intersection of these will give you the encrypted
-			character.
+Encryption: To encrypt a message, look at the first column for the letter from your password and the first row for the letter from your message. The intersection of these will give you the encrypted character.
 
-	Example: With the password "cat" and message "hello":
+	Example: 
+ 		We choose the following:
+		Keyphrase: cat
+  		Password: fibo
+    		message: hello
 
-	Find the row starting with 'c'.
-	Find the column starting with 'h'.
-	The character at the intersection is your encrypted code.
-	
-	Decryption: For decryption, the process is reversed:
-	Find the index of the row corresponding to your password character.
-	Locate the right column in that row to retrieve the first entry.
+      		As before, our matrix looks like this:
+		![image](https://github.com/user-attachments/assets/5105f0e2-9c96-4413-8d32-cb5aeb85541e)
+
+ 		Now we make password and message same length, to do that we enlarge/shorten the password to the 		message length... by repeating, if necessary the password. 
+   		So we get :
+     			msg:	h e l l o
+			psw: 	f i b o f
+
+   		Now, we take each pair: 
+     			We search the first column for letter f and get a row. 
+			We search the first row for letter h and get a column.
+   			The intersection is our encrypted character: 
+      		
+		![image](https://github.com/user-attachments/assets/0c43a598-bc85-4c13-98e9-7bb6f42deb75)
+
+      
+		Decryption: For decryption, the process is reversed:
+		Find the index of the row corresponding to your password character.
+		Locate the right column in that row to retrieve the first entry.
