@@ -39,6 +39,13 @@ def generateRow(prime, alphabet):
   # print(a)
   return a
 
+def check_column_exists(matrix, start_letter):
+    # Check if new_column exists in the current matrix
+    for row in matrix:
+        if row[0] == start_letter:
+            return True
+    return False
+
 #not used
 def translate(character): #returns the index of the character in the alphabet
   return ord(character) - ord('a')
@@ -52,17 +59,19 @@ def find(character, first): #returns the index of the row in the matrix
 def primeArr():
   #generate 26 prime numbers in primes array
     infinityprimes = gen_primes() 
-    primes = []
-    for i in range(26):
-        primes.append(next(infinityprimes))
-    #   print (next(primes))
-
-    return primes
+    # primes = []
+    # for i in range(26):
+    #     primes.append(next(infinityprimes))
+    # #   print (next(primes))
+    return infinityprimes
+    # return primes
 
 def fibArr():
     #generate 26 fibonacci numbers in fib array
     fib = [0, 1]
-    for i in range(24):
+    # for i in range(24):
+    #     fib.append(fib[-1] + fib[-2])
+    for i in range(1000):
         fib.append(fib[-1] + fib[-2])
     return fib
 
@@ -82,12 +91,17 @@ def generateAlphabet(keyword): # generate my "alphabet" array
 
 def generateMatrix(alphabet, encodes):
     matrix = []
-    for i in range(26): #for every row do this
-        num = encodes[i]
+    num = 0
+    # Use an iterator to fetch items from the generator
+    encode_iter = iter(encodes)
 
-        #generate the row (with the prime stuff)
+    while(len(matrix) < 26):
+        num += next(encode_iter)
         a = generateRow(num, alphabet)
-        matrix.append(a)
+        if not check_column_exists(matrix, a[0]):
+          matrix.append(a)
+       
+       
     return matrix
 
 def write_matrix(matrix):
@@ -95,6 +109,7 @@ def write_matrix(matrix):
   with open("matrix.txt", "w") as file:
     for row in matrix:
         file.write(" ".join(row) + "\n")
+
 
 def encrypt(matrix, password, message):
   encryption = ""
@@ -158,8 +173,7 @@ def main_encrypt():
             user_pswd += user_pswd[i]
     if len(user_pswd) > len(user_message):
         password = password[:len(user_message)]
-
-    #matrix saved to txt file in folder
+    
     user_dec = input("Do you want to write the matrix to a file? (y/n): ")
     if user_dec == "y":
         write_matrix(matrix)
@@ -179,7 +193,7 @@ def main_decrypt():
 
     user_keyphrase = user_keyphrase.lower()
     user_pswd = user_pswd.lower()
-    user_message = user_message.lower()
+    user_secret_message = user_secret_message.lower()
 
     #choose your translation order
     #0 = default, 1 = prime, 2 = Fibonacci, 3 = random
