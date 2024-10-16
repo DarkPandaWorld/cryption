@@ -48,7 +48,8 @@ _Default Translation:_ Each row shifts the letters by one position.
 _Prime and Fibonacci Translations:_ Each of these methods shifts the alphabet based on their respective sequences. So those matrices would look something like this:
 Prime: 
 
-![image](https://github.com/user-attachments/assets/75629618-90aa-4ae3-8e56-600527057c32)
+![image](https://github.com/user-attachments/assets/63a1e2e2-9fbf-4259-b980-bbfabe1ef7e3)
+
 
 
 Fibo:
