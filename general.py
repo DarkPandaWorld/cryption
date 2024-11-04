@@ -1,6 +1,6 @@
 import math
 import string
-import numpy as np
+import random
 
 
 #Principle of Sieve of eratosthenes
@@ -28,28 +28,7 @@ def valid(user_translation_order):
     return True
   else:
     return False
-
-def generateRow(prime, alphabet):
-  a = []
-  for i in range(26):
-    if i + (prime%26) >= 26:
-      a.append(alphabet[i + (prime%26) - 26])
-    else: a.append(alphabet[i + (prime%26)])
-
-  # print(a)
-  return a
-
-def check_column_exists(matrix, start_letter):
-    # Check if new_column exists in the current matrix
-    for row in matrix:
-        if row[0] == start_letter:
-            return True
-    return False
-
-#not used
-def translate(character): #returns the index of the character in the alphabet
-  return ord(character) - ord('a')
-
+  
 def find(character, first): #returns the index of the row in the matrix
   for i in range(len(first)):
     if first[i] == character:
@@ -67,40 +46,60 @@ def primeArr():
     # return primes
 
 def fibArr():
-    #generate 26 fibonacci numbers in fib array
-    fib = [0, 1]
-    # for i in range(24):
-    #     fib.append(fib[-1] + fib[-2])
-    for i in range(1000):
-        fib.append(fib[-1] + fib[-2])
-    return fib
+    # Fibonacci sequence generator
+    a, b = 0, 1
+    while True:
+        yield a
+        a, b = b, a + b
+    # print(fib)
+    # return fib
+
+def generateEncode(list): 
+    number_arr = []
+    while len(number_arr) < 26:
+        mom = next(list) % 26
+
+        if(mom not in number_arr and mom != 0):
+            number_arr.append(mom)
+        else:
+            while mom in number_arr or mom == 0:
+                mom += 1
+            number_arr.append(mom)
+    return number_arr
+
 
 def generateAlphabet(keyword): # generate my "alphabet" array
     alphabet = [] 
     alphabet_lowercase = [chr(i) for i in range(ord('a'), ord('z') + 1)]
+    used_characters = set()  # Track used characters to avoid duplicates
 
-    for i in range(26):
-        if i < len(keyword):
-            alphabet.append(keyword[i])
-            # search_character(keyword[i], alphabet_lowercase)
-            alphabet_lowercase.remove(keyword[i])
-    
-        else:
-            alphabet.append(alphabet_lowercase.pop(0))
+# Add characters from the keyword to the alphabet
+    for char in keyword:
+        if char not in used_characters:
+            alphabet.append(char)
+            used_characters.add(char)
+            try:
+                alphabet_lowercase.remove(char)
+            except ValueError:
+                pass
+
+    # Add remaining characters from alphabet_lowercase to the alphabet
+    for char in alphabet_lowercase:
+        alphabet.append(char)
     return alphabet  
 
-def generateMatrix(alphabet, encodes):
+def generateMatrix(alphabet, numbers):
+    # print(len(alphabet))
+    # print(alphabet)
     matrix = []
-    num = 0
-    # Use an iterator to fetch items from the generator
-    encode_iter = iter(encodes)
-
-    while(len(matrix) < 26):
-        num += next(encode_iter)
-        a = generateRow(num, alphabet)
-        if not check_column_exists(matrix, a[0]):
-          matrix.append(a)
-       
+    for i in numbers:
+        arr = []
+        for j in range(26):
+            # print(j+i % 26)
+            arr.append(alphabet[(j + i) % 26])
+        matrix.append(arr)
+    
+    # print(matrix)
        
     return matrix
 
@@ -145,40 +144,65 @@ def main_encrypt():
 
     #choose your translation order
     #0 = default, 1 = prime, 2 = Fibonacci, 3 = random
-    user_translation_order = input("Please enter your translation order where 0 = default, 1 = prime, 2 = Fibonacci, 3 = random: ")
+    user_translation_order = input("Please enter your translation order where 0 = default, 1 = prime, 2 = fibonacchi, 3 = random: ")
     encodes = []
 
     while not valid(user_translation_order):
-        user_translation_order = input("Please enter your translation order where 0 = default, 1 = prime, 2 = Fibonacci, 3 = random: ")
+        user_translation_order = input("Please enter your translation order where 0 = default, 1 = prime, 2 = fibonacchi, 3 = random: ")
     #check if user uses tool correct 
     if user_translation_order == "0":
         print("You chose default translation order")
-        encodes = list(range(26))
+        encodes = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26]
     elif user_translation_order == "1":
         print("You chose prime translation order")
-        encodes = primeArr()  
+        encodes = generateEncode(gen_primes())
+    # elif user_translation_order == "2":
+    #     print("You chose Fibonacci translation order")
+    #     encodes = fibArr()
     elif user_translation_order == "2":
-        print("You chose Fibonacci translation order")
-        encodes = fibArr()
-    else :
+        print("You chose fibonacchi translation order")
+        encodes = generateEncode(fibArr())
+        # encodes = (26, 2, 4, 6, 8, 10, 12, 14, 16, 18, 20, 22, 24, 1, 3, 5, 7, 9, 11, 13, 15, 17, 19, 21, 23, 25)
+    else:
         print("You chose random translation order")
-        encodes = np.random.permutation(26)
+        encodes = list(range(26)) 
+        random.shuffle(encodes)
+        print(encodes)
+
+
+
+        print("Do you want to save your translation order to a file? (y/n): ")
+        user_dec = input()
+      
+        if user_dec == "y":
+            with open("translation_order.txt", "w") as file:
+                for i in encodes:
+                    file.write(str(i) + " ")
+  
+
+    print("Works till here")
+
+  
 
     alphabet = generateAlphabet(user_keyphrase)
     matrix = generateMatrix(alphabet, encodes)
+
+    print("Works after generating matrix")  
     
     #make password same length as message
     if len(user_pswd) < len(user_message):
         for i in range(len(user_message) - len(user_pswd)):
             user_pswd += user_pswd[i]
     if len(user_pswd) > len(user_message):
-        password = password[:len(user_message)]
+        user_pswd = user_pswd[:len(user_message)]
     
     user_dec = input("Do you want to write the matrix to a file? (y/n): ")
     if user_dec == "y":
         write_matrix(matrix)
 
     print(encrypt(matrix, user_pswd, user_message))
+
+
 
 def main_decrypt():
 
@@ -224,7 +248,7 @@ def main_decrypt():
         for i in range(len(user_secret_message) - len(user_pswd)):
             user_pswd += user_pswd[i]
     if len(user_pswd) > len(user_secret_message):
-        password = password[:len(user_secret_message)]
+        user_pswd = user_pswd[:len(user_secret_message)]
    
     print(decrypt(matrix, user_pswd, user_secret_message))
 
